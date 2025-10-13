@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import React, { useRef, useState } from "react";
 import "./Welcome.scss";
+import MusicPlayer from "../MusicPlayer/MusicPlayer";
 
 export default function Welcome() {
   const contentRef = useRef();
@@ -23,21 +24,29 @@ export default function Welcome() {
       opacity: 0,
       duration: 1,
       ease: "power2.out",
-     
+      onComplete: () => {
+        containerRef.current.style.display = "none";
+        setIsVisible(false);
+      },
     });
   };
 
   return (
     <>
       <div ref={containerRef} className="welcome-background"></div>
-      <div  className={ "welcome-container"}>
-        <div ref={contentRef} className="welcome-content-container">
-          <h1 className="welcome-title">Timonun Çarkına Hoş Geldiniz!</h1>
-          <button className="welcome-button" onClick={handleClick}>
-            Başlayın
-          </button>
-        </div>
-      </div>
+      {
+        isVisible && (
+        <div className={"welcome-container"}>
+          <div ref={contentRef} className="welcome-content-container">
+            <h1 className="welcome-title">Timonun Çarkına Hoş Geldiniz!</h1>
+            <button className="welcome-button" onClick={handleClick}>
+              Başlayın
+            </button>
+          </div>
+        </div> 
+         
+        )
+      }
     </>
   );
 }

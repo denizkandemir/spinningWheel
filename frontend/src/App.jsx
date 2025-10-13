@@ -1,15 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css' 
+import './App.css'
 import Welcome from './components/Welcome/Welcome'
+import MusicPlayer from './components/MusicPlayer/MusicPlayer'
 
 function App() {
-  
+
   return (
     <>
-     <Welcome />
+      <div className="app-container">
+        <Welcome />
+        <MusicPlayer />
+      </div>
     </>
   )
 }
