@@ -1,0 +1,183 @@
+.ws-container {
+    font-family: Inter, system-ui, Arial;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.ws-left {
+    max-width: 340px;
+}
+
+.ws-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.ws-form {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .75rem;
+}
+
+.ws-input {
+    flex: 1;
+    padding: .5rem .6rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 14px
+}
+
+.ws-buttons {
+    display: flex;
+    gap: .5rem
+}
+
+.ws-btn {
+    padding: .45rem .6rem;
+    border-radius: 6px;
+    border: none;
+    background: #222;
+    color: #fff;
+    cursor: pointer
+}
+
+.ws-btn.danger {
+    background: #b91c1c
+}
+
+.ws-list {
+    max-height: 240px;
+    overflow: auto;
+    border: 1px dashed #eee;
+    padding: .5rem;
+    border-radius: 6px
+}
+
+.ws-empty {
+    color: #666;
+    padding: .5rem
+}
+
+.ws-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .35rem .45rem;
+    border-radius: 4px;
+    margin-bottom: .35rem;
+    background: #fafafa
+}
+
+.ws-item-text {
+    font-size: 14px
+}
+
+.ws-remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px
+}
+
+.ws-controls {
+    margin-top: .75rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center
+}
+
+.ws-spin {
+    padding: .6rem 1rem;
+    background: linear-gradient(90deg, #0ea5a4, #06b6d4);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer
+}
+
+.ws-selected {
+    font-size: 14px
+}
+
+.ws-wheel-wrap {
+    position: relative;
+    width: 420px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.ws-wheel {
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    position: relative;
+    display: block
+}
+
+.ws-pointer {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    z-index: 3
+}
+
+.ws-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 0 0;
+    width: 120px;
+    height: 120px;
+    text-align: center;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.ws-label span {
+    display: inline-block;
+    padding: .3rem .6rem;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: rotate(0deg);
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width:900px) {
+    .ws-container {
+        flex-direction: column
+    }
+
+    .ws-right {
+        order: -1
+    }
+
+    .ws-wheel-wrap {
+        width: 320px;
+        height: 320px
+    }
+
+    .ws-wheel {
+        width: 300px;
+        height: 300px
+    }
+}

@@ -3,10 +3,9 @@ import React, { useRef, useState } from "react";
 import "./Welcome.scss";
 import MusicPlayer from "../MusicPlayer/MusicPlayer";
 
-export default function Welcome() {
+export default function Welcome({ isVisible, setIsVisible }) {
   const contentRef = useRef();
   const containerRef = useRef();
-  const [isVisible, setIsVisible] = useState(true);
 
   const handleClick = () => {
     gsap.to(contentRef.current, {
@@ -36,15 +35,17 @@ export default function Welcome() {
       <div ref={containerRef} className="welcome-background"></div>
       {
         isVisible && (
-        <div className={"welcome-container"}>
-          <div ref={contentRef} className="welcome-content-container">
-            <h1 className="welcome-title">Timonun Çarkına Hoş Geldiniz!</h1>
-            <button className="welcome-button" onClick={handleClick}>
-              Başlayın
-            </button>
+          <div className="welcome-player-container">
+            <div className={"welcome-container"}>
+              <div ref={contentRef} className="welcome-content-container">
+                <h1 className="welcome-title">Timonun Çarkına Hoş Geldiniz!</h1>
+                <button className="welcome-button" onClick={handleClick}>
+                  Başlayın
+                </button>
+              </div>
+            </div>
+            <MusicPlayer />
           </div>
-        </div> 
-         
         )
       }
     </>
