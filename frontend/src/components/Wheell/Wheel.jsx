@@ -1,155 +1,195 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Wheel.scss';
 
-
-export default function WheelSpinner() {
-  const [options, setOptions] = useState(['Timonun', 'Çarkına', 'Hoşgeldiniz']);
-  const [input, setInput] = useState('');
+export default function SpinnerWheel() {
+  const canvasRef = useRef(null);
+  const [options, setOptions] = useState([
+    'Timonun','Çarkona','Hoş','Geldiniz','Oyun','Başlasın','Şansınızı','Deneyin',
+  ]);
+  const [inputValue, setInputValue] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const wheelRef = useRef(null);
-  const pointerRef = useRef(null);
+  const [rotation, setRotation] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const spinSpeedRef = useRef(0);
 
-  const sliceAngle = options.length ? 360 / options.length : 360;
+  const colors = [
+    '#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#6C5CE7', 
+    '#00B894', '#A29BFE', '#FD79A8', '#FDCB6E', '#FF7675',
+  ];
 
-  const gradient = () => {
-    if (!options.length) return '#ff0000ff';
-    const colors = generateColors(options.length);
-    let pos = 0;
-    const parts = options.map((opt, i) => {
-      const start = pos;
-      const end = pos + sliceAngle;
-      pos = end;
-      return `${colors[i]} ${start}deg ${end}deg`;
+  const drawWheel = (ctx, currentRotation) => {
+    const canvas = canvasRef.current;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 200;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate((currentRotation * Math.PI) / 180);
+
+    const sliceAngle = (2 * Math.PI) / options.length;
+
+    options.forEach((option, index) => {
+      // Draw segment
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, index * sliceAngle, (index + 1) * sliceAngle);
+      ctx.lineTo(0, 0);
+      ctx.fillStyle = colors[index % colors.length];
+      ctx.fill();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Draw text
+      ctx.save();
+      ctx.rotate(index * sliceAngle + sliceAngle / 2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 16px Arial';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowBlur = 4;
+      ctx.fillText(option.substring(0, 15), radius - 30, 8);
+      ctx.restore();
     });
-    return `conic-gradient(${parts.join(',')})`;
-  };
 
-  const generateColors = (n) => {
-    const out = [];
-    for (let i = 0; i < n; i++) {
-      const hue = Math.round((i * 360) / n);
-      out.push(`hsl(${hue} 75% 55%)`);
-    }
-    return out;
-  };
-
-  const handleSpin = () => {
-    if (!options.length || isSpinning) return;
-    setIsSpinning(true);
-    setSelected(null);
-
-    const targetIndex = Math.floor(Math.random() * options.length);
-
-    const fullRotations = 6 + Math.floor(Math.random() * 4); 
-    const targetAngle = (targetIndex * sliceAngle) + (sliceAngle / 2);
-    const finalRotation = fullRotations * 360 + targetAngle;
-
-    const duration = 5 + Math.random() * 2; 
-
-    const wheel = wheelRef.current;
-    if (wheel) {
-      wheel.style.transition = `transform ${duration}s cubic-bezier(.1,.9,.2,1)`;
-      wheel.style.transform = `rotate(-${finalRotation}deg)`;
-    }
-
-    setTimeout(() => {
-      setIsSpinning(false);
-      setSelected(options[targetIndex]);
-      if (wheel) {
-        wheel.style.transition = 'none';
-        const remainder = finalRotation % 360;
-        wheel.style.transform = `rotate(-${remainder}deg)`;
-      }
-    }, duration * 1000 + 100);
-  };
-
-  const handleAdd = (e) => {
-    e.preventDefault();
-    const val = input.trim();
-    if (!val) return;
-    setOptions(prev => [...prev, val]);
-    setInput('');
-  };
-
-  const handleRemove = (i) => {
-    setOptions(prev => prev.filter((_, idx) => idx !== i));
-  };
-
-  const handleClear = () => {
-    setOptions([]);
-    setSelected(null);
+    ctx.restore();
   };
 
   useEffect(() => {
-    const wheel = wheelRef.current;
-    if (wheel) {
-      wheel.style.transition = 'none';
-      wheel.style.transform = 'rotate(0deg)';
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    drawWheel(ctx, rotation);
+  }, [rotation, options]);
+
+  useEffect(() => {
+    if (!isSpinning) return;
+
+    const interval = setInterval(() => {
+      setRotation((prev) => (prev + spinSpeedRef.current) % 360);
+      spinSpeedRef.current *= 0.98;
+
+      if (spinSpeedRef.current < 0.5) {
+        setIsSpinning(false);
+        // Pointer yukarıda (12 saat pozisyonu) olduğu için doğru hesaplama
+        const normalizedRotation = (360 - (rotation % 360)) % 360;
+        const sliceAngle = 360 / options.length;
+        const selectedIndex = Math.floor(normalizedRotation / sliceAngle) % options.length;
+        setSelectedOption(options[selectedIndex]);
+        spinSpeedRef.current = 0;
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isSpinning, rotation, options]);
+
+  const addOption = () => {
+    if (inputValue.trim() && options.length < 20) {
+      setOptions([...options, inputValue.trim()]);
+      setInputValue('');
     }
-  }, [options.length]);
+  };
+
+  const removeOption = (index) => {
+    if (options.length > 2) {
+      setOptions(options.filter((_, i) => i !== index));
+    }
+  };
+
+  const spin = () => {
+    if (isSpinning) return;
+    setIsSpinning(true);
+    spinSpeedRef.current = 30 + Math.random() * 20;
+    setSelectedOption(null);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      addOption();
+    }
+  };
 
   return (
-    <div className="ws-container">
-      <div className="ws-left">
-        <form onSubmit={handleAdd} className="ws-form">
-          <input
-            className="ws-input"
-            placeholder="Seçenek ekle (Enter veya +)"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={isSpinning}
+    <div className="container">
+      <div className="wheel-section">
+        <div className="wheel-wrapper">
+          <canvas
+            ref={canvasRef}
+            width={500}
+            height={500}
+            className="canvas"
           />
-          <div className="ws-buttons">
-            <button className="ws-btn" onClick={handleAdd} disabled={isSpinning}>+</button>
-            <button type="button" className="ws-btn danger" onClick={handleClear} disabled={isSpinning}>Temizle</button>
+          <div className="pointer" />
+          <button
+            onClick={spin}
+            disabled={isSpinning}
+            className={`spin-button ${isSpinning ? 'disabled' : ''}`}
+          >
+            ▶
+          </button>
+        </div>
+
+        {selectedOption && (
+          <div className="result">
+            <h3>🎉 Kazanan:</h3>
+            <p><strong>{selectedOption}</strong></p>
           </div>
-        </form>
-
-        <div className="ws-list">
-          {options.length === 0 && <div className="ws-empty">Henüz seçenek yok — ekleyin!</div>}
-          {options.map((opt, i) => (
-            <div key={i} className="ws-item">
-              <span className="ws-item-text">{opt}</span>
-              <button className="ws-remove" onClick={() => handleRemove(i)} disabled={isSpinning}>✕</button>
-            </div>
-          ))}
-        </div>
-
-        <div className="ws-controls">
-          <button className="ws-spin" onClick={handleSpin} disabled={isSpinning || options.length === 0}>Döndür</button>
-          {selected && <div className="ws-selected">Seçilen: <strong>{selected}</strong></div>}
-        </div>
+        )}
       </div>
 
-      <div className="ws-right">
-        <div className="ws-wheel-wrap">
-          <div className="ws-pointer" ref={pointerRef}>▼</div>
-          <div
-            className="ws-wheel"
-            ref={wheelRef}
-            style={{ background: gradient() }}
-            aria-hidden={false}
+      <div className="control-section">
+        <h3 className="heading">Seçenek Ekle/Sil</h3>
+        <div className="input-group">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Yeni seçenek yazın..."
+            maxLength="20"
+            className="input"
+          />
+          <button
+            onClick={addOption}
+            disabled={options.length >= 20}
+            className={`add-btn ${options.length >= 20 ? 'disabled' : ''}`}
           >
-            {options.map((opt, i) => {
-              const rotate = i * sliceAngle + (sliceAngle / 2);
-              return (
-                <div
-                  key={i}
-                  className="ws-label"
-                  style={{ 
-                    transform: `rotate(${rotate}deg) translate(-50%, -50%)`,
-                  }}
-                >
-                  <span style={{ transform: `rotate(-${rotate}deg)` }}>{opt}</span>
-                </div>
-              );
-            })}
-          </div>
+            Ekle
+          </button>
         </div>
+
+        <div className="options-list">
+          <h4 style={{ marginBottom: '10px', color: '#2c3e50' }}>
+            Seçenekler ({options.length})
+          </h4>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {options.map((option, index) => (
+              <li key={index} className="option-item">
+                <span
+                  className="color-dot"
+                  style={{
+                    backgroundColor: colors[index % colors.length],
+                  }}
+                />
+                <span style={{ flex: 1 }}>{option}</span>
+                <button
+                  onClick={() => removeOption(index)}
+                  disabled={options.length <= 2}
+                  className={`remove-btn ${options.length <= 2 ? 'disabled' : ''}`}
+                >
+                  ✕
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="note">
+          {options.length >= 20
+            ? '⚠️ Maksimum seçenek sayısına ulaştınız'
+            : `${20 - options.length} seçenek daha ekleyebilirsiniz`}
+        </p>
       </div>
     </div>
   );
 }
-
-
