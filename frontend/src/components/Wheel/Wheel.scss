@@ -98,6 +98,18 @@
       border-top: 15px solid #FF6B35;
     }
   }
+
+  @media (max-width: 480px) {
+  
+    border-radius: 40px 40px 40px 40px / 20px 20px 20px 20px;
+    
+    &::after {
+      bottom: -17px;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 15px solid #FF6B35;
+    }
+  }
 }
 
 .spin-button {
