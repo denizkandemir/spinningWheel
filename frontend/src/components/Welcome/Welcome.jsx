@@ -9,7 +9,7 @@ export default function Welcome({ isVisible, setIsVisible }) {
   const containerRef = useRef();
 
   const [options, setOptions] = useState([
-    'Timonun', 'Çarkona', 'Hoş', 'Geldiniz', 'Oyun', 'Başlasın', 'Şansınızı', 'Deneyin',
+    'Timonun', 'Çarkına', 'Hoş', 'Geldiniz', 'Oyun', 'Başlasın', 'Şansınızı', 'Deneyin',
   ]);
 
   const colors = [
