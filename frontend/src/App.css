@@ -1,5 +1,7 @@
 html {
   scroll-behavior: smooth;
+    overflow-x: hidden;
+
 }
 body {
   margin: 0;
@@ -7,4 +9,5 @@ body {
   box-sizing: border-box;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
 }

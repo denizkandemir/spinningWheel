@@ -5,7 +5,7 @@ import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-const MusicPlayer = () => {
+const MusicPlayer = ({containerClass}) => {
     const [currentSong, setCurrentSong] = useState(songs[0]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -28,7 +28,7 @@ const MusicPlayer = () => {
     };
 
     return (
-        <div className="music-player">
+        <div className={containerClass}>
             <div className="music-content-container">
                 <AudioPlayer
                     src={currentSong.src}

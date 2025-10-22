@@ -20,6 +20,7 @@ export default function Welcome({ isVisible, setIsVisible }) {
   const [inputValue, setInputValue] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [showGuitarRain, setShowGuitarRain] = useState(true);
 
   const handleClick = () => {
     gsap.to(contentRef.current, {
@@ -54,20 +55,37 @@ export default function Welcome({ isVisible, setIsVisible }) {
     setIsSpinning(false);
   };
 
+  const createGuitarEmojis = () => {
+    const guitars = [];
+    for (let i = 0; i < 15; i++) {
+      guitars.push(
+        <div 
+          key={i} 
+          className="guitar-emoji" 
+          style={{
+            left: Math.random() * 100 + '%',
+            animationDelay: Math.random() * 2 + 's',
+            animationDuration: (2 + Math.random() * 2) + 's'
+          }}
+        >
+          🎸
+        </div>
+      );
+    }
+    return guitars;
+  };
+
   return (
     <>
       <div ref={containerRef} className="welcome-background"></div>
+      {showGuitarRain && isVisible && (
+        <div className="welcome-guitar-rain-container">
+          {createGuitarEmojis()}
+        </div>
+      )}
       {
         isVisible && (
           <div className="welcome-player-container">
-            {/* <div className={"welcome-container"}>
-              <div ref={contentRef} className="welcome-content-container">
-                <h1 className="welcome-title">Timonun Çarkına Hoş Geldiniz!</h1>
-                <button className="welcome-button" onClick={handleClick}>
-                  Başlayın
-                </button>
-              </div>
-            </div> */}
             <div onClick={handleClick} ref={contentRef} className="wheel-container">
               <Wheel
                 options={options}
@@ -80,7 +98,7 @@ export default function Welcome({ isVisible, setIsVisible }) {
               />
             </div>
 
-            <MusicPlayer />
+            <MusicPlayer containerClass="music-player-welcome"  />
           </div>
         )
       }

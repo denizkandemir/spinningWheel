@@ -8,135 +8,136 @@ $text-light: rgba(255, 255, 255, 0.92);
 $text-muted: rgba(255, 255, 255, 0.6);
 
 .music-player {
-      display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
 
-    .music-content-container {
-        width: 100%;
-        max-width: 480px;
-        padding: 20px;
-        border-radius: 20px;
-        background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(30, 30, 30, 0.3));
-        border: 1px solid $glass-border;
-        backdrop-filter: blur(12px) saturate(120%);
-        -webkit-backdrop-filter: blur(12px) saturate(120%);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-        color: $text-light;
-        overflow: hidden;
-       
-    }
+@media (max-width: 480px) {
+    padding: 14px;
 
-    /* Header */
-    .rhap_header {
-        font-size: 16px;
-        font-weight: 600;
-        color: $text-light;
-        text-align: center;
-        margin-bottom: 8px;
-        letter-spacing: 0.3px;
-    }
-
-    /* === Player Container === */
-    .rhap_container {
-        background: transparent !important;
-        box-shadow: none !important;
-        padding: 0;
-        color: $text-light;
-    }
-
-    /* === Main Controls (play, next, previous) === */
-    .rhap_main-controls {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 10px;
+    .rhap_play-pause-button {
+        width: 48px;
+        height: 48px;
     }
 
     .rhap_button-clear.rhap_icon-button {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.15s ease;
-        color: $text-light;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-        }
-    }
-
-    .rhap_play-pause-button {
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        background: linear-gradient(145deg, $accent, lighten($accent, 8%));
-        color: #fff !important;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 14px rgba($accent, 0.4);
-        transition: transform 0.15s ease;
-
-        &:hover {
-            transform: scale(1.07);
-        }
-    }
-
-    /* === Progress Bar === */
-    .rhap_progress-section {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .rhap_progress-bar {
-        height: 8px;
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 999px;
-        overflow: hidden;
-    }
-
-    .rhap_progress-filled {
-        background: linear-gradient(90deg, $accent, lighten($accent, 12%));
-        height: 100%;
-        transition: width 0.25s ease;
-    }
-
-    .rhap_time {
-        font-size: 12px;
-        color: $text-muted;
-        min-width: 40px;
-        text-align: center;
-    }
-
-    /* === Volume === */
-    .rhap_volume-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 8px;
-    }
-
-    /* === Responsive === */
-    @media (max-width: 480px) {
-        padding: 14px;
-
-        .rhap_play-pause-button {
-            width: 48px;
-            height: 48px;
-        }
-
-        .rhap_button-clear.rhap_icon-button {
-            width: 36px;
-            height: 36px;
-        }
+        width: 36px;
+        height: 36px;
     }
 }
+}
+
+.music-content-container {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(30, 30, 30, 0.3));
+    border: 1px solid $glass-border;
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    color: $text-light;
+    overflow: hidden;
+
+}
+
+/* Header */
+.rhap_header {
+    font-size: 16px;
+    font-weight: 600;
+    color: $text-light;
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+
+/* === Player Container === */
+.rhap_container {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+    color: $text-light;
+}
+
+/* === Main Controls (play, next, previous) === */
+.rhap_main-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.rhap_button-clear.rhap_icon-button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    color: $text-light;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+    }
+}
+
+.rhap_play-pause-button {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, $accent, lighten($accent, 8%));
+    color: #fff !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba($accent, 0.4);
+    transition: transform 0.15s ease;
+
+    &:hover {
+        transform: scale(1.07);
+    }
+}
+
+/* === Progress Bar === */
+.rhap_progress-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rhap_progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.rhap_progress-filled {
+    background: linear-gradient(90deg, $accent, lighten($accent, 12%));
+    height: 100%;
+    transition: width 0.25s ease;
+}
+
+.rhap_time {
+    font-size: 12px;
+    color: white !important;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* === Volume === */
+.rhap_volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+}
+

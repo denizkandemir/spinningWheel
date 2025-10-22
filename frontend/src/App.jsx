@@ -15,7 +15,7 @@ function App() {
         {!isVisible && 
         <>
           <WheelSpinner />
-          <MusicPlayer />
+          <MusicPlayer containerClass="music-player" />
         </> 
         }
 
