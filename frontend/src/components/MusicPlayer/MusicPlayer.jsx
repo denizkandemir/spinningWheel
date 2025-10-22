@@ -32,6 +32,7 @@ const MusicPlayer = ({containerClass}) => {
             <div className="music-content-container">
                 <AudioPlayer
                     src={currentSong.src}
+                    autoPlay={true}
                     onPlay={(e) => console.log("onPlay")}
                     header={`${currentSong.title}`}
                     showSkipControls={true}
